@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block context %}
+{% include 'core/navbar.html' %}
+{% endblock %}
+
+{% block main %}
+<div class="form-enviarPedido">
+    <form method="POST" action="{% url 'criarPedidoUsuario' request.user.id %}">
+        {% csrf_token %}
+        {% if mensagem %}
+            {% bootstrap_messages %}
+        {% else %}
+        <br>
+        <div class="text-center"> <h1> Carrinho </h1> </div>
+        <br>
+        <div class="container">
+            <div class="text-center">
+                <table class="table table-striped">
+                    <tr>
+                        <th> <h4> Produto </h4> </th> <th> <h4> Quantidade </h4> </th> <th> <h4> Valor </h4> </th> <th> <h4> Total </h4> </th>
+                        <th> <h4> Remover </h4> </th>
+                    </tr>
+                    <tr>
+                    {% for car in viewCarrinho %}
+                        <td> {{ car.nome_produto }} </td>
+                        <td> {{ car.quantidade }} </td>
+                        <td> R$ {{ car.valor_unitario }} </td>
+                        <td> R$ {{ car.total_produto }} </td>
+                        <td> <a href="{% url 'deleteItemCarrinho' car.id %}">
+                        <img width="30px;" height="30px;" src="{% static 'core/image/excluir.png' %}"> </a> </td>
+                    </tr>
+                    {% endfor %}
+                        <tr> <td colspan="4" > <h4 align="left" > Total = R$ {{ valor_total }} </h4> </td> </tr>
+                </table>
+            </div>
+        </div>
+        <br>
+         <a class="btn btn-info" href="{% url 'products' %}" role="button"> Voltar </a>
+        <button class="btn btn-info" type="submit" name="button"> Enviar Pedido </button>
+        {% endif %}
+    </form>
+</div>
+{% endblock %}

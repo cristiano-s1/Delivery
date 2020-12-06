@@ -1,0 +1,42 @@
+{% extends 'core/base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
+{% block context %}
+{% include 'core/navbar.html' %}
+{% endblock %}
+
+{% block main %}
+<div class="form-enviarPedido">
+    <form method="POST" action="{% url 'criarPedidoUsuario' request.user.id %}">
+        {% csrf_token %}
+        {% if mensagem %}
+        {% bootstrap_messages %}
+        {% else %}
+        <br>
+        <div class="text-center"> <h1> Meus pedidos </h1> </div>
+        <br>
+        <div class="container">
+            <table class="table table-striped">
+                <tr>
+                    <th> <h4> Produto </h4> </th> <th> <h4> Quantidade </h4> </th> <th> <h4> Valor </h4> </th> <th> <h4> Total </h4> </th>
+                    <th> <h4> Remover </h4> </th>
+                </tr>
+                <tr>
+                    {% for pedido in viewPedidos %}
+                    <td> {{ pedido.nome_produto }} </td>
+                    <td> {{ pedido.quantidade }} </td>
+                    <td> R$ {{ pedido.valor_unitario }} </td>
+                    <td> R$ {{ pedido.total_produto }} </td>
+                    <td> {{ pedido.status_pedido }} </td>
+                </tr>
+                    {% endfor %}
+                    <tr> <td colspan="4" > <h4> Total = R$ {{ valor_total }} </h4> </td> </tr>
+            </table>
+        </div>
+        <a class="btn btn-info" href="{% url 'products' %}" role="button"> Voltar </a>
+        {% endif %}
+    </form>
+    <br>
+</div>
+{% endblock %}

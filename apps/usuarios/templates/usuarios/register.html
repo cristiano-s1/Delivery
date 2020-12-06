@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block context %}
+<div class="container">
+    <h1 class="text-center">Cadastro usuário</h1>
+    <br>
+    {% bootstrap_messages %}
+
+    <form action="{% url 'register' %}" method="post" class="form" autocomplete="off" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% bootstrap_form form %}
+        {% buttons %}
+            <a class="btn btn-info" href="{% url 'index' %}" role="button"> Voltar </a>
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        {% endbuttons %}
+    </form>
+</div>
+{% endblock %}
